@@ -16,20 +16,20 @@ class AnswerofWizard {
     }
 }
 
-class WizardsStorage {
+class WizardsStorage2 {
 
     static wizardSKEY = "wizards";
 
     static getwizards() {
         let wizards;
         //KEY NOT EXSIST
-        if (localStorage.getItem(WizardsStorage.wizardSKEY) === null) {
+        if (localStorage.getItem(WizardsStorage2.wizardSKEY) === null) {
             wizards = [];
         }
         //Key Exsist - Need to Get Value
         else {
             //01 Get Storage value as JSON STRING
-            let wizardsArrTxt = localStorage.getItem(WizardsStorage.wizardSKEY);
+            let wizardsArrTxt = localStorage.getItem(WizardsStorage2.wizardSKEY);
             //02 Convert the string to real JSON OBJECT
             let wizardsArr = JSON.parse(wizardsArrTxt);
             wizards = wizardsArr;
@@ -40,15 +40,15 @@ class WizardsStorage {
 
 
     static Addwizard(wizard) {
-        let wizards = WizardsStorage.getwizards();
+        let wizards = WizardsStorage2.getwizards();
         wizards.push(wizard);
         var wizardtjsonTxt = JSON.stringify(wizards);
-        localStorage.setItem(WizardsStorage.wizardSKEY, wizardtjsonTxt);
+        localStorage.setItem(WizardsStorage2.wizardSKEY, wizardtjsonTxt);
     }
 
     static removeAll() {
 
-        localStorage.removeItem(WizardsStorage.wizardSKEY);
+        localStorage.removeItem(WizardsStorage2.wizardSKEY);
     }
 }
 
@@ -105,7 +105,7 @@ class AnswersStorage {
 
     static removeAll() {
 
-        localStorage.removeItem(WizardsStorage.wizardSKEY);
+        localStorage.removeItem(WizardsStorage2.wizardSKEY);
     }
 
 }
@@ -121,7 +121,7 @@ class UI {
     }
 
     static displayWizardsByStorageByPage(numpage) {
-        let WizardsArr = WizardsStorage.getwizards();
+        let WizardsArr = WizardsStorage2.getwizards();
         var id = 0;
 
         const quiz_box = document.querySelector(".quiz_box");
@@ -289,7 +289,7 @@ continue_btn.onclick = () => {
 }
 
 function loadUsers() {
-    WizardsStorage.removeAll();
+    WizardsStorage2.removeAll();
     var urlParams = query_string();
 
     var xhr = new XMLHttpRequest();
@@ -310,11 +310,11 @@ function loadUsers() {
             }
             maxPageID = Math.max(...lst);
 
-            WizardsStorage.removeAll();
+            WizardsStorage2.removeAll();
             for (var i = 0; i < data.length; i++) {
                 for (var j = 0; j < data[i]["wizardData"].length; j++) {
                     let wizard = new Wizard(data[i].wizardType, data[i]["wizardData"][j].wizardIndex, data[i].numPages, data[i]["wizardData"][j].id)
-                    WizardsStorage.Addwizard(wizard);
+                    WizardsStorage2.Addwizard(wizard);
                 }
             }
         }
@@ -430,7 +430,7 @@ function sendAnswers() {
 
 function exitWizard() {
     AnswersStorage.removeAll();
-    WizardsStorage.removeAll();
+    WizardsStorage2.removeAll();
     window.location.href = "pageuser.html";
 }
 

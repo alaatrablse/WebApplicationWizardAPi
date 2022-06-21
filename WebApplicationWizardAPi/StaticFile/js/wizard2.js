@@ -40,7 +40,6 @@ class WizardsStorage {
             let wizardsArr = JSON.parse(wizardsArrTxt);
             wizards = wizardsArr;
         }
-
         return wizards;
     }
 
@@ -60,7 +59,6 @@ class WizardsStorage {
 
     ///Remove Item From Storage By ISBN Code
     static removewizard(id,numpage) {
-
         //1)READ ALL wizardS AS OBJECT (getwizards()) get Array
         let wizards = WizardsStorage.getwizards();
 
@@ -75,14 +73,13 @@ class WizardsStorage {
                 i++;
             }
         });
-       
         //03)
         var wizardtjsonTxt = JSON.stringify(wizards);
         localStorage.setItem(WizardsStorage.wizardSKEY, wizardtjsonTxt);
 
     }
 
-    static UpdateWizard(id,numpage,wizard){
+    static UpdateWizard(id, numpage, wizard) {
         let wizards = WizardsStorage.getwizards();
         //2) Remove Item
         var i = 0; 
@@ -101,7 +98,6 @@ class WizardsStorage {
     }
 
     static removeAll(){
-       
         localStorage.removeItem(WizardsStorage.wizardSKEY);
     }
 
@@ -113,7 +109,7 @@ class WizardsStorage {
         localStorage.setItem(WizardsStorage.wizardSKEY, wizardtjsonTxt);
     }
 
-    static update(wizard){
+    static update(wizard) {
         var wizardtjsonTxt = JSON.stringify(wizard);
         localStorage.setItem(WizardsStorage.wizardSKEY, wizardtjsonTxt);
     }
@@ -122,7 +118,7 @@ class WizardsStorage {
 
 var size =0 ;
 class UI {
-
+    
     ///-- Add Item of wizard to Table
     static addWizardToList(wizard) {
         let listTableBody = document.querySelector("#wizard-list");
@@ -137,14 +133,12 @@ class UI {
        <td> <a id="p-${wizard.numPage}b-${wizard.idWizard}" onclick="UpdateRow(this,${size},'${wizard.numPages}','${wizard.wizardType}');" href="#"> <img src="images/refresh-button.png" alt="updat"></a></td>`
         
         if(size === 0){
-            // console.log(listTableBody.getElementsByTagName('tr').length);
             ss+=`<td ><a onclick="downfun(${size},${wizard.numPages})"><img src="images/down-arrow.png" alt="updat"></a></td>`
         }
         else{
             ss+=`<td ><a onclick="upfun(${size},${wizard.numPages})"><img src="images/up-arrow.png" alt="updat"></a></td><td></td>`
             if(size > 1){
                 var size2 = listTableBody.getElementsByTagName('tr')[size-1].getElementsByTagName('td').length;
-                // console.log(size2);
                 listTableBody.getElementsByTagName('tr')[size-1].getElementsByTagName('td')[size2-2].innerHTML=
                 `<a onclick="upfun(${size-1},${wizard.numPages})"><img src="images/up-arrow.png" alt="updat"></a>`
                 listTableBody.getElementsByTagName('tr')[size-1].getElementsByTagName('td')[size2-1].innerHTML=
@@ -156,7 +150,7 @@ class UI {
     }
 
     //Read Data FRom Storage And Display Wizards in list
-        static displayWizardsByStorage() {
+    static displayWizardsByStorage() {
         let WizardsArr = WizardsStorage.getwizards().pages;
         WizardsArr.forEach(itemWizard => {
             UI.addWizardToList(itemWizard);
@@ -180,7 +174,7 @@ class UI {
         listTableBody.innerHTML = "";
     }
 
-    static UpdateRowWizardsByStorage(id,numpage){
+    static UpdateRowWizardsByStorage(id, numpage) {
         var select = document.getElementById("typeWizardChoice");
         var choose = select.options[select.selectedIndex].value;
         var inputElements = document.getElementById('indexs').getElementsByTagName('input')
@@ -211,15 +205,16 @@ function getCookies(cname) {
     return "";
 }
 
-if(getCookies("usercookis")=="" || getCookies("usertype")!="WIZARD CREATOR")
-    window.location.href="home.html";
-else if(getCookies("usercookis") !== WizardsStorage.getwizards().userId){
+if (getCookies("usertype") != "WIZARD CREATOR") {
+    window.location.href = "home.html";
+}
+else if (getCookies("usercookis") !== WizardsStorage.getwizards().userId) {
     Delete_Wizard();
     titel();
 }
 ///////////////deleteRow/////////////////////
 
-function deleteRow(element, id,numpage) {
+function deleteRow(element, id, numpage) {
     WizardsStorage.removewizard(id,numpage);
     UI.ClearList();
     UI.displayWizardsByStorageByPage(document.getElementById("myList").selectedIndex)
@@ -229,7 +224,7 @@ function deleteRow(element, id,numpage) {
 
 //////////////////UpdateRow///////////////////
 
-function UpdateRow(element, id,numpage,type) {
+function UpdateRow(element, id, numpage, type) {
     UI.ClearList();
     var select = document.getElementById("typeWizardChoice");
     var choose = select.options;
@@ -264,7 +259,7 @@ function UpdateRow(element, id,numpage,type) {
 }
 
 ///////////////////////////////////
-function AddInput2(id,numpage){
+function AddInput2(id, numpage) {
     var varss = dd(numpage);
     var select = document.getElementById("typeWizardChoice");
     var div = document.getElementById("indexs");
@@ -293,7 +288,6 @@ function AddInput2(id,numpage){
 
 function favTutorial() {
     var mylist = document.getElementById("myList");
-    
     UI.displayWizardsByStorageByPage(mylist.selectedIndex); 
     titel();
 }
@@ -442,8 +436,7 @@ function AddPageToStorg(){
 }
 
 //////////////////////delete Wizard//////////////////////////
-
-function Delete_Wizard(){
+function Delete_Wizard() {
     WizardsStorage.removeAll();
     UI.ClearList();
     var mylist = document.getElementById("myList");

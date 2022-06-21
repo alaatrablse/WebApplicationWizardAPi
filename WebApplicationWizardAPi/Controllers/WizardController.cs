@@ -54,17 +54,33 @@ namespace WebApplicationWizardAPi.Controllers
                 return BadRequest();
             }
 
-            Random random = new Random();
-            // Any random integer   
-            int num = random.Next(1000,50000);
-
-            while (_dataRepository.Check(num) == true)
+            var ss = wizard.Hashnum;
+            if(wizard.Hashnum == 0)
             {
-                num = random.Next(1000, 50000);
+                Random random = new Random();
+                // Any random integer   
+                int num = random.Next(1000, 50000);
+
+                while (_dataRepository.Check(num) == true)
+                {
+                    num = random.Next(1000, 50000);
+                }
+                wizard.Hashnum = num;
+                _dataRepository.Add(wizard);
+                return Ok(wizard);
             }
-            wizard.Hashnum = num;
-            _dataRepository.Add(wizard);
-            return Ok(wizard);
+            else if (_dataRepository.Check(wizard.Hashnum) == true)
+            {
+                var wizardToUpdate = _dataRepository.Get(wizard.Id);
+                if (wizardToUpdate == null)
+                {
+                    return NotFound("The User record couldn't be found.");
+                }
+                _dataRepository.Update(wizardToUpdate,wizard);
+                return Ok(wizard);
+            }
+
+            return NotFound("error");
         }
         /////////////////use///////////////////
         [HttpDelete("{Hashnum}/{wizardid}")]

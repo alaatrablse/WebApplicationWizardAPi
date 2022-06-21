@@ -79,7 +79,16 @@ namespace WebApplicationWizardAPi.Models.DataManager
 
         public void Update(Wizard entityToUpdate, Wizard entity)
         {
-            throw new NotImplementedException();
+            entityToUpdate = _wizardContext.Wizards
+                .Single(b => b.Id == entityToUpdate.Id);
+
+            entityToUpdate.Titel = entity.Titel;
+            entityToUpdate.Description = entity.Description;
+            entityToUpdate.UserId = entity.UserId;
+            entityToUpdate.Hashnum = entity.Hashnum; 
+            entityToUpdate.Pages = entity.Pages;
+            _wizardContext.SaveChanges();
+
         }
 
         public bool Check(string v)

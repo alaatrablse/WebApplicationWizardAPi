@@ -2,42 +2,42 @@ function getCookies(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
     }
     return "";
 }
 
-function getWizards(){
+function getWizards() {
 
-    if(getCookies("usercookis")==""){
-        window.location.href="home.html";
+    if (getCookies("usercookis") == "") {
+        window.location.href = "home.html";
     }
-    var theUrl="/api/users/"+getCookies("usercookis");
+    var theUrl = "/api/users/" + getCookies("usercookis");
     var xhr = new XMLHttpRequest();
     xhr.open('GET', theUrl, true);
-    xhr.onload = function(){
-        if(this.status == 200){
+    xhr.onload = function () {
+        if (this.status == 200) {
             var data = JSON.parse(this.responseText);
             var ss;
             let listTableBody = document.querySelector("#wizards");
-            listTableBody.innerHTML="";
+            listTableBody.innerHTML = "";
             let row = document.createElement("tr");
             var i = 1;
-            for(var e in data){
-                ss=`<tr class="row100 body">
+            for (var e in data) {
+                ss = `<tr class="row100 body">
                 <td class="cell100 column1">${i}</td>`
-                if(data[e]==="")
-                    ss+=`<td class="cell100 column2">no title</td>`
+                if (data[e] === "")
+                    ss += `<td class="cell100 column2">no title</td>`
                 else
-                    ss+=`<td class="cell100 column2">${data[e]}</td>`
-                ss+=`<td class="cell100 column3">${e}</td>
+                    ss += `<td class="cell100 column2">${data[e]}</td>`
+                ss += `<td class="cell100 column3">${e}</td>
                 <td class="cell100 column4"><a onclick="edit(${e})" href="#"> <img src="images/edit.png"></a></td>
                 <td class="cell100 column5"><a onclick="deleteRwo(${e})" href="#"> <img src="images/bin.png"></a></td>
                 <td class="cell100 column6"><a onclick="copylink(${e})" href="#"> <img src="images/link.png"></a></td>
@@ -48,9 +48,9 @@ function getWizards(){
                 row = document.createElement("tr");
             }
         }
-        else{
+        else {
             window.alert("email or password not corect")
-           
+
         }
     }
     xhr.send();
@@ -83,7 +83,7 @@ function getWizardsofAdmin() {
                 else
                     ss += `<td class="cell100 column2">${data[e].titel}</td>`;
                 ss += `<td class="cell100 column3">${data[e].hashnum}</td>
-                <td class="cell100 column4"><a onclick="edit(${data[e].hashnum})" href="#"> <img src="images/edit.png"></a></td>
+                <td class="cell100 column4"><a onclick="results(${data[e].hashnum})" href="#"> <img src="images/edit.png"></a></td>
                 <td class="cell100 column5"><a onclick="deleteRwo(${data[e].hashnum})" href="#"> <img src="images/bin.png"></a></td>
                 <td class="cell100 column6"><a onclick="copylink(${data[e].hashnum})" href="#"> <img src="images/link.png"></a></td>
                 </tr>`;
@@ -114,11 +114,12 @@ else {
 function copylink(hash) {
     chickcookies()
     var ctx = window.location.origin;
-    navigator.clipboard.writeText(ctx + "/second.html?h="+hash);
+    navigator.clipboard.writeText(ctx + "/second.html?h=" + hash);
 }
 
 
 function fun1(hashnum) {
+    document.getElementById("edit").innerHTML = "results";
     var xhr = new XMLHttpRequest();
     xhr.open('GET', '/api/wizards/' + hashnum, true);
     xhr.onload = function () {
@@ -134,7 +135,7 @@ function fun1(hashnum) {
                 if (xhr1.readyState == 4 && xhr1.status == "200") {
                     let listTableBody = document.querySelector("#wizards");
                     listTableBody.innerHTML = "";
-                    
+
                 } else {
                     console.error(users);
                 }
@@ -155,7 +156,7 @@ function fun2(hashnum) {
         var users = JSON.parse(xhr.responseText);
         if (xhr.readyState == 4 && xhr.status == "200") {
             let listTableBody = document.querySelector("#wizards");
-            listTableBody.innerHTML="";
+            listTableBody.innerHTML = "";
             getWizards();
         } else {
             console.error(users);
@@ -164,7 +165,7 @@ function fun2(hashnum) {
     xhr.send();
 }
 
-function deleteRwo(hashnum){
+function deleteRwo(hashnum) {
     chickcookies()
     var url = "";
     if (getCookies("usertype") == "ADMIN") {
@@ -177,13 +178,12 @@ function deleteRwo(hashnum){
 }
 
 
-function results(hashnum){
+function results(hashnum) {
     chickcookies();
-   
+
 }
 
 function edit(hashnum) {
-    console.log("1")
     chickcookies();
 
     var xhr = new XMLHttpRequest();
@@ -192,10 +192,16 @@ function edit(hashnum) {
         if (this.status == 200) {
             var wizard = JSON.parse(this.responseText);
             console.log(wizard);
-           
+            wizard.userId = wizard.userId.toString();
+            var wizardtjsonTxt = JSON.stringify(wizard);
+            
+            localStorage.setItem("Addwizards", wizardtjsonTxt);
+            localStorage.setItem("Addwizardss", wizardtjsonTxt);
+            window.location.href = "AddWizaed.html";
+
         }
         else {
-            console.log("2")
+            window.location.href = "404error.html";
         }
     }
     xhr.send();
@@ -214,15 +220,15 @@ function deleteAllCookies() {
         document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
 }
-function exit(){
+function exit() {
     chickcookies()
     deleteAllCookies();
-    window.location.href="home.html";
+    window.location.href = "home.html";
     titel();
 }
 
 
-function chickcookies(){
-    if(getCookies("usercookis")=="")
-        window.location.href="home.html";
+function chickcookies() {
+    if (getCookies("usercookis") == "")
+        window.location.href = "home.html";
 }
