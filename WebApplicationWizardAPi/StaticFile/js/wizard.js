@@ -483,9 +483,14 @@ function upfun(index,numpage){
 //////////////////////Save Wizard//////////////////////////
 function Save_Wizard(){;
 
-    if(getCookies("usercookis")=="")
+    if (getCookies("usercookis") == "") {
+        deleteAllCookies();
+        Delete_Wizard();
         window.location.href="home.html";
-    else if(getCookies("usercookis") !== WizardsStorage.getwizards().userId){
+    }
+    else if (getCookies("usercookis") !== WizardsStorage.getwizards().userId) {
+        deleteAllCookies();
+        Delete_Wizard();
         window.location.href="home.html";
     }
     else{

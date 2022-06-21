@@ -38,7 +38,7 @@ function getWizards(){
                 else
                     ss+=`<td class="cell100 column2">${data[e]}</td>`
                 ss+=`<td class="cell100 column3">${e}</td>
-                <td class="cell100 column4"><a onclick="results(${e})" href="#"> <img src="images/edit.png"></a></td>
+                <td class="cell100 column4"><a onclick="edit(${e})" href="#"> <img src="images/edit.png"></a></td>
                 <td class="cell100 column5"><a onclick="deleteRwo(${e})" href="#"> <img src="images/bin.png"></a></td>
                 <td class="cell100 column6"><a onclick="copylink(${e})" href="#"> <img src="images/link.png"></a></td>
                 </tr>`
@@ -83,7 +83,7 @@ function getWizardsofAdmin() {
                 else
                     ss += `<td class="cell100 column2">${data[e].titel}</td>`;
                 ss += `<td class="cell100 column3">${data[e].hashnum}</td>
-                <td class="cell100 column4"><a onclick="results(${data[e].hashnum})" href="#"> <img src="images/edit.png"></a></td>
+                <td class="cell100 column4"><a onclick="edit(${data[e].hashnum})" href="#"> <img src="images/edit.png"></a></td>
                 <td class="cell100 column5"><a onclick="deleteRwo(${data[e].hashnum})" href="#"> <img src="images/bin.png"></a></td>
                 <td class="cell100 column6"><a onclick="copylink(${data[e].hashnum})" href="#"> <img src="images/link.png"></a></td>
                 </tr>`;
@@ -182,6 +182,25 @@ function results(hashnum){
    
 }
 
+function edit(hashnum) {
+    console.log("1")
+    chickcookies();
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '/api/wizards/' + hashnum, true);
+    xhr.onload = function () {
+        if (this.status == 200) {
+            var wizard = JSON.parse(this.responseText);
+            console.log(wizard);
+           
+        }
+        else {
+            console.log("2")
+        }
+    }
+    xhr.send();
+
+}
 
 
 /////////////////////////exit///////////////////////////
