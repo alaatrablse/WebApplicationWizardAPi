@@ -52,3 +52,5 @@ CREATE TABLE [dbo].[Answers] (
     PRIMARY KEY CLUSTERED ([Id] ASC),
     FOREIGN KEY ([WizaedDataID]) REFERENCES [dbo].[WizardData] ([Id])
 );
+
+INSERT INTO [dbo].[Users] values('Admin','Admin@gmail.com','admin','ADMIN');
